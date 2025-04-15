@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Vecha Test Report</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .metric-card {
+            transition: transform 0.2s;
+        }
+        .metric-card:hover {
+            transform: translateY(-2px);
+        }
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <!-- Header -->
+    <header class="bg-white shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 py-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h1 class="text-2xl font-bold text-gray-900">Test Execution Report</h1>
+                    <p class="mt-1 text-sm text-gray-500">Generated on {{TIMESTAMP}}</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <span class="px-3 py-1 rounded-full text-sm font-medium {{STATUS_COLOR}}">
+                        {{STATUS}}
+                    </span>
+                    <button onclick="window.print()" class="px-4 py-2 bg-gray-100 text-gray-700 rounded-md hover:bg-gray-200">
+                        <i class="fas fa-print mr-2"></i>Print
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Summary Section -->
+    <main class="max-w-7xl mx-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+            <!-- Total Tests -->
+            <div class="bg-white overflow-hidden shadow rounded-lg metric-card">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-blue-500 rounded-md p-3">
+                            <i class="fas fa-vial text-white"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Total Tests</dt>
+                                <dd class="text-2xl font-semibold text-gray-900">{{TOTAL_TESTS}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pass Rate -->
+            <div class="bg-white overflow-hidden shadow rounded-lg metric-card">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-green-500 rounded-md p-3">
+                            <i class="fas fa-check text-white"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Pass Rate</dt>
+                                <dd class="text-2xl font-semibold text-gray-900">{{PASS_RATE}}%</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Duration -->
+            <div class="bg-white overflow-hidden shadow rounded-lg metric-card">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-purple-500 rounded-md p-3">
+                            <i class="fas fa-clock text-white"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Duration</dt>
+                                <dd class="text-2xl font-semibold text-gray-900">{{DURATION}}</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Coverage -->
+            <div class="bg-white overflow-hidden shadow rounded-lg metric-card">
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flex items-center">
+                        <div class="flex-shrink-0 bg-yellow-500 rounded-md p-3">
+                            <i class="fas fa-chart-pie text-white"></i>
+                        </div>
+                        <div class="ml-5 w-0 flex-1">
+                            <dl>
+                                <dt class="text-sm font-medium text-gray-500 truncate">Coverage</dt>
+                                <dd class="text-2xl font-semibold text-gray-900">{{COVERAGE}}%</dd>
+                            </dl>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Test Results -->
+        <div class="mt-8">
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Test Results</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="flow-root">
+                        <ul class="-my-5 divide-y divide-gray-200">
+                            {{TEST_RESULTS}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Categories -->
+        <div class="mt-8 grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- Category Results -->
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Category Results</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="space-y-4">
+                        {{CATEGORY_RESULTS}}
+                    </div>
+                </div>
+            </div>
+
+            <!-- Performance Metrics -->
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Performance Metrics</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="space-y-4">
+                        {{PERFORMANCE_METRICS}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Issues -->
+        <div class="mt-8">
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Issues</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <div class="space-y-4">
+                        {{ISSUES}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Environment -->
+        <div class="mt-8">
+            <div class="bg-white shadow rounded-lg">
+                <div class="px-4 py-5 border-b border-gray-200 sm:px-6">
+                    <h3 class="text-lg leading-6 font-medium text-gray-900">Environment</h3>
+                </div>
+                <div class="px-4 py-5 sm:p-6">
+                    <dl class="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                        {{ENVIRONMENT}}
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white mt-8 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <p class="text-center text-sm text-gray-500">
+                Generated by El Vecha Test Framework • Session ID: {{SESSION_ID}}
+            </p>
+        </div>
+    </footer>
+
+    <script>
+        // Template for test result item
+        const testResultTemplate = `
+            <li class="py-4">
+                <div class="flex items-center space-x-4">
+                    <div class="flex-shrink-0">
+                        <span class="h-8 w-8 rounded-full flex items-center justify-center {{RESULT_COLOR}}">
+                            <i class="fas {{RESULT_ICON}} text-white"></i>
+                        </span>
+                    </div>
+                    <div class="flex-1 min-w-0">
+                        <p class="text-sm font-medium text-gray-900 truncate">
+                            {{TEST_NAME}}
+                        </p>
+                        <p class="text-sm text-gray-500">
+                            {{TEST_DURATION}} • {{TEST_CLASS}}
+                        </p>
+                    </div>
+                    <div>
+                        <button onclick="toggleDetails('{{TEST_ID}}')" class="text-gray-400 hover:text-gray-500">
+                            <i class="fas fa-chevron-down"></i>
+                        </button>
+                    </div>
+                </div>
+                <div id="{{TEST_ID}}" class="mt-4 hidden">
+                    <pre class="text-sm text-gray-700 bg-gray-50 rounded p-4">{{TEST_DETAILS}}</pre>
+                </div>
+            </li>
+        `;
+
+        // Template for category result item
+        const categoryTemplate = `
+            <div class="relative pt-1">
+                <div class="flex mb-2 items-center justify-between">
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">{{CATEGORY_NAME}}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-sm font-semibold text-gray-700">{{CATEGORY_PASS_RATE}}%</span>
+                    </div>
+                </div>
+                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                    <div style="width:{{CATEGORY_PASS_RATE}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center {{CATEGORY_COLOR}}"></div>
+                </div>
+            </div>
+        `;
+
+        // Template for performance metric item
+        const metricTemplate = `
+            <div class="relative pt-1">
+                <div class="flex mb-2 items-center justify-between">
+                    <div>
+                        <span class="text-sm font-semibold text-gray-700">{{METRIC_NAME}}</span>
+                    </div>
+                    <div class="text-right">
+                        <span class="text-sm font-semibold text-gray-700">{{METRIC_VALUE}}</span>
+                    </div>
+                </div>
+                <div class="overflow-hidden h-2 mb-4 text-xs flex rounded bg-gray-200">
+                    <div style="width:{{METRIC_PERCENTAGE}}%" class="shadow-none flex flex-col text-center whitespace-nowrap text-white justify-center {{METRIC_COLOR}}"></div>
+                </div>
+            </div>
+        `;
+
+        // Template for issue item
+        const issueTemplate = `
+            <div class="rounded-md {{ISSUE_BG}} p-4">
+                <div class="flex">
+                    <div class="flex-shrink-0">
+                        <i class="fas {{ISSUE_ICON}} {{ISSUE_COLOR}}" aria-hidden="true"></i>
+                    </div>
+                    <div class="ml-3">
+                        <h3 class="text-sm font-medium {{ISSUE_TEXT_COLOR}}">{{ISSUE_TITLE}}</h3>
+                        <div class="mt-2 text-sm {{ISSUE_TEXT_COLOR}}">
+                            <p>{{ISSUE_DESCRIPTION}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+
+        // Template for environment item
+        const envTemplate = `
+            <div class="px-4 py-5 bg-gray-50 shadow rounded-lg overflow-hidden sm:p-6">
+                <dt class="text-sm font-medium text-gray-500 truncate">{{ENV_NAME}}</dt>
+                <dd class="mt-1 text-sm text-gray-900">{{ENV_VALUE}}</dd>
+            </div>
+        `;
+
+        function toggleDetails(id) {
+            const element = document.getElementById(id);
+            const button = element.previousElementSibling.querySelector('button i');
+            if (element.classList.contains('hidden')) {
+                element.classList.remove('hidden');
+                button.classList.remove('fa-chevron-down');
+                button.classList.add('fa-chevron-up');
+            } else {
+                element.classList.add('hidden');
+                button.classList.remove('fa-chevron-up');
+                button.classList.add('fa-chevron-down');
+            }
+        }
+    </script>
+</body>
+</html>
